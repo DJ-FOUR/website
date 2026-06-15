@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>杜俊涛的作品集</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&family=Geist:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <!-- React & React Router DOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-fixed-dim': '#a5b4fc',
+                        surface: '#0b1326',
+                        'surface-container': '#131b2e',
+                        'on-surface': '#e2e8f0',
+                        'on-surface-variant': '#94a3b8',
+                        'outline-variant': '#334155',
+                        background: '#0b1326',
+                        'on-background': '#e2e8f0',
+                        secondary: "#ddb7ff",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        tertiary: "#ffb783",
+                        "surface-container-high": "#222a3d",
+                        "surface-container-low": "#131b2e",
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-xl-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Noto Sans SC"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-mono": ["Geist"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Noto Sans SC"]
+                    },
+                    spacing: {
+                        "container-max-width": "1280px",
+                        "base": "8px",
+                        "margin-mobile": "20px",
+                        "section-gap-desktop": "160px",
+                        "section-gap-mobile": "80px",
+                        "gutter": "24px"
+                    },
+                     fontSize: {
+                        "headline-xl": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-xl-mobile": ["32px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-mono": ["14px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "display-lg": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b1326;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        /* Utility Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        .glass-panel, .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-panel-hover:hover {
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow: 0 0 30px rgba(192, 193, 255, 0.1);
+        }
+
+        .image-zoom-container { overflow: hidden; }
+        .image-zoom { transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1); }
+        .image-zoom-container:hover .image-zoom { transform: scale(1.05); }
+
+        .text-gradient {
+            background: linear-gradient(to right, #6366f1, #ddb7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.5); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.8); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .hero-gradient { background: radial-gradient(circle at center, rgba(105, 0, 179, 0.15) 0%, rgba(11, 19, 38, 1) 70%); }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary/30 selection:text-white min-h-screen flex flex-col font-sans">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Custom Hooks ---
+        const useIntersectionObserver = () => {
+            useEffect(() => {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.1
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.fade-in-up').forEach((el) => {
+                    observer.observe(el);
+                });
+
+                return () => observer.disconnect();
+            });
+        };
+
+        const useScrollToTop = () => {
+            const { pathname } = useLocation();
+            useEffect(() => {
+                window.scrollTo(0, 0);
+            }, [pathname]);
+        };
+
+        // --- Components ---
+        const NavBar = () => {
+            const location = useLocation();
+            const isActive = (path) => location.pathname === path;
+
+            const navItemClass = (path) => `transition-colors duration-300 font-body-md text-body-md px-3 py-2 rounded-md ${
+                isActive(path) 
+                ? 'text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1' 
+                : 'text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:bg-white/5'
+            }`;
+
+            return (
+                <nav className="sticky top-0 w-full z-50 bg-surface-container/50 dark:bg-surface-container/50 backdrop-blur-xl border-b border-white/10 dark:border-white/5 shadow-sm transition-all duration-500 ease-in-out font-body-md text-body-md">
+                    <div className="flex justify-between items-center px-8 py-4 max-w-container-max-width mx-auto">
+                        <Link to="/" className="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-background hover:text-primary transition-colors">
+                            杜俊涛的作品集
+                        </Link>
+                        
+                        <div className="hidden md:flex items-center gap-8">
+                            <Link to="/" className={navItemClass('/')}>作品总览</Link>
+                            <Link to="/mobile" className={navItemClass('/mobile')}>手机app</Link>
+                            <Link to="/web" className={navItemClass('/web')}>网站设计</Link>
+                            <Link to="/game" className={navItemClass('/game')}>游戏界面</Link>
+                        </div>
+                        
+                        <button className="bg-gradient-to-r from-primary to-secondary text-background font-body-md text-body-md px-6 py-2.5 rounded-full font-bold hover:opacity-90 hover:shadow-[0_0_20px_rgba(128,131,255,0.4)] transition-all duration-300 transform hover:-translate-y-0.5">
+                            联系我
+                        </button>
+                    </div>
+                </nav>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="w-full py-12 md:py-20 bg-surface dark:bg-background border-t border-outline-variant/30 transition-all duration-300 mt-auto">
+                <div className="max-w-container-max-width mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
+                        杜俊涛的作品集
+                    </div>
+                    <div className="flex gap-6 mt-4 md:mt-0">
+                        <a className="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 font-medium" href="#">微信</a>
+                        <a className="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 font-medium" href="#">简历下载</a>
+                        <a className="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 font-medium" href="#">设计作品</a>
+                    </div>
+                    <div className="text-sm text-on-surface-variant">
+                        © 2024 Du Juntao 杜俊涛. All rights reserved.
+                    </div>
+                </div>
+            </footer>
+        );
+
+        // --- Pages ---
+        const HomePage = () => {
+            useIntersectionObserver();
+            return (
+                <main>
+                    <section className="px-gutter max-w-container-max-width mx-auto pt-8 md:pt-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {/* Mobile Card */}
+                            <Link to="/mobile" className="group relative overflow-hidden rounded-2xl bg-surface-container h-[550px] cursor-pointer fade-in-up delay-100 transition duration-500 hover:-translate-y-2 border border-white/5 hover:border-primary/30 hover:shadow-[0_10px_40px_-10px_rgba(192,193,255,0.2)]" style={{WebkitMaskImage: 'linear-gradient(white, white)', maskImage: 'linear-gradient(white, white)'}}>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{backgroundImage: "url('image/01.png')"}}></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+                                <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-3 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
+                                    <span className="inline-flex w-fit items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-label-mono text-label-mono border border-primary/20 backdrop-blur-md">MOBILE</span>
+                                    <h2 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-background">手机app</h2>
+                                    <p className="font-body-md text-body-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out delay-75 line-clamp-2">
+                                        设计校园周边轻食餐厅手机APP
+                                    </p>
+                                </div>
+                            </Link>
+
+                            {/* Web Card */}
+                            <Link to="/web" className="group relative overflow-hidden rounded-2xl bg-surface-container h-[550px] cursor-pointer fade-in-up delay-200 transition duration-500 hover:-translate-y-2 border border-white/5 hover:border-secondary/30 hover:shadow-[0_10px_40px_-10px_rgba(192,193,255,0.2)]" style={{WebkitMaskImage: 'linear-gradient(white, white)', maskImage: 'linear-gradient(white, white)'}}>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{backgroundImage: "url('image/03.png')"}}></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+                                <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-3 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
+                                    <span className="inline-flex w-fit items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label-mono text-label-mono border border-secondary/20 backdrop-blur-md">WEB</span>
+                                    <h2 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-background">网站设计</h2>
+                                    <p className="font-body-md text-body-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out delay-75 line-clamp-2">
+                                        保护野生动物的响应式网站
+                                    </p>
+                                </div>
+                            </Link>
+
+                            {/* Game Card */}
+                            <Link to="/game" className="group relative overflow-hidden rounded-2xl bg-surface-container h-[550px] cursor-pointer fade-in-up delay-300 transition duration-500 hover:-translate-y-2 border border-white/5 hover:border-tertiary/30 hover:shadow-[0_10px_40px_-10px_rgba(255,183,131,0.2)]" style={{WebkitMaskImage: 'linear-gradient(white, white)', maskImage: 'linear-gradient(white, white)'}}>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110 rounded-2xl" style={{backgroundImage: "url('image/02.png')"}}></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 rounded-2xl"></div>
+                                <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-3 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
+                                    <span className="inline-flex w-fit items-center px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-mono text-label-mono border border-tertiary/20 backdrop-blur-md">GAME UI</span>
+                                    <h2 className="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-background">游戏界面</h2>
+                                    <p className="font-body-md text-body-md text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out delay-75 line-clamp-2">
+                                        二次元抽卡游戏的游戏界面
+                                    </p>
+                                </div>
+                            </Link>
+                        </div>
+                    </section>
+                </main>
+            );
+        };
+
+        const MobilePage = () => {
+             useIntersectionObserver();
+             const scrollRef = useRef(null);
+             let isDown = false;
+             let startX;
+             let scrollLeft;
+
+             const onMouseDown = (e) => {
+                 isDown = true;
+                 if(scrollRef.current) {
+                     scrollRef.current.classList.add('active:cursor-grabbing');
+                     startX = e.pageX - scrollRef.current.offsetLeft;
+                     scrollLeft = scrollRef.current.scrollLeft;
+                 }
+             };
+             const onMouseLeave = () => {
+                 isDown = false;
+                 if(scrollRef.current) scrollRef.current.classList.remove('active:cursor-grabbing');
+             };
+             const onMouseUp = () => {
+                 isDown = false;
+                 if(scrollRef.current) scrollRef.current.classList.remove('active:cursor-grabbing');
+             };
+             const onMouseMove = (e) => {
+                 if (!isDown) return;
+                 e.preventDefault();
+                 if(scrollRef.current) {
+                     const x = e.pageX - scrollRef.current.offsetLeft;
+                     const walk = (x - startX) * 2;
+                     scrollRef.current.scrollLeft = scrollLeft - walk;
+                 }
+             };
+
+             return (
+                 <main className="flex-grow flex flex-col items-center pt-8 pb-8 fade-in-up">
+                    <section className="w-full max-w-container-max-width mx-auto px-6 lg:px-8">
+                        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
+                            <div className="w-full lg:w-5/12 flex flex-col justify-center">
+                                <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
+                                    <span className="text-sm font-medium text-primary-fixed-dim">项目类型：校园餐饮点单应用</span>
+                                </div>
+                                <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white leading-tight">
+                                    校园咖啡GO
+                                </h2>
+                                <div className="glass-card rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+                                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <h3 className="text-2xl font-bold text-white mb-4">设计说明</h3>
+                                    <div className="space-y-4 text-on-surface-variant leading-relaxed text-lg">
+                                        <p>一款专为大学校园打造的咖啡点单与配送应用程序，专注于提供便捷、高效的线上购餐体验。</p>
+                                        <p>解决方案：采用清新简约的视觉风格搭配模块化的界面布局，包含店铺选择、商品详情、订单支付、取餐码等完整功能闭环。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full lg:w-7/12 relative flex justify-center lg:justify-end">
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/20 blur-[100px] rounded-full pointer-events-none"></div>
+                                <div className="relative z-10 w-full rounded-3xl overflow-hidden glass-card shadow-[0_20px_50px_rgba(0,0,0,0.5)] group pb-4">
+                                    <button
+                                        onClick={() => { if(scrollRef.current) scrollRef.current.scrollBy({left: -400, behavior: 'smooth'}); }}
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-primary/70 backdrop-blur-md border border-primary/40 flex items-center justify-center text-white hover:bg-primary/90 transition-all duration-300 hover:scale-110"
+                                    >
+                                        <span className="material-symbols-outlined text-2xl">chevron_left</span>
+                                    </button>
+                                    <button
+                                        onClick={() => { if(scrollRef.current) scrollRef.current.scrollBy({left: 400, behavior: 'smooth'}); }}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-primary/70 backdrop-blur-md border border-primary/40 flex items-center justify-center text-white hover:bg-primary/90 transition-all duration-300 hover:scale-110"
+                                    >
+                                        <span className="material-symbols-outlined text-2xl">chevron_right</span>
+                                    </button>
+                                    <div
+                                        ref={scrollRef}
+                                        onMouseDown={onMouseDown}
+                                        onMouseLeave={onMouseLeave}
+                                        onMouseUp={onMouseUp}
+                                        onMouseMove={onMouseMove}
+                                        className="flex overflow-x-auto snap-x snap-mandatory custom-scrollbar cursor-grab h-[600px] items-center"
+                                        style={{scrollBehavior: 'smooth'}}
+                                    >
+                                        <img alt="App Interface" className="h-[560px] w-auto max-w-none snap-center pointer-events-none" src="image/B.png" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section className="w-full max-w-container-max-width mx-auto px-6 lg:px-8 mt-16">
+                        <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
+                            <span className="text-sm font-medium text-primary-fixed-dim">APP导航图</span>
+                        </div>
+                        <img alt="导航图" className="w-full h-auto" src="image/daohang.png" />
+                    </section>
+                 </main>
+             )
+        };
+
+        const WebPage = () => {
+             useIntersectionObserver();
+             const scrollRef = useRef(null);
+
+             return (
+                 <main className="flex-grow flex flex-col items-center pt-8 pb-8 fade-in-up">
+                    <section className="w-full max-w-container-max-width mx-auto px-6 lg:px-8">
+                        <div className="mb-10">
+                            <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
+                                <span className="text-sm font-medium text-primary-fixed-dim">项目类型：保护野生动物的响应式网站</span>
+                            </div>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-white">自然守望者</h1>
+                            <div className="glass-card rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <h3 className="text-2xl font-bold text-white mb-4">设计说明</h3>
+                                <div className="text-on-surface-variant leading-relaxed text-lg">
+                                    <p>保护野生动物的响应式网站，致力于通过视觉叙事唤起公众对濒危物种的关注与保护意识。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="relative w-full rounded-3xl overflow-hidden glass-card shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                            <button
+                                onClick={() => { if(scrollRef.current) scrollRef.current.scrollBy({left: -500, behavior: 'smooth'}); }}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-primary/70 backdrop-blur-md border border-primary/40 flex items-center justify-center text-white hover:bg-primary/90 transition-all duration-300 hover:scale-110"
+                            >
+                                <span className="material-symbols-outlined text-2xl">chevron_left</span>
+                            </button>
+                            <button
+                                onClick={() => { if(scrollRef.current) scrollRef.current.scrollBy({left: 500, behavior: 'smooth'}); }}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-primary/70 backdrop-blur-md border border-primary/40 flex items-center justify-center text-white hover:bg-primary/90 transition-all duration-300 hover:scale-110"
+                            >
+                                <span className="material-symbols-outlined text-2xl">chevron_right</span>
+                            </button>
+                            <div
+                                ref={scrollRef}
+                                className="flex overflow-x-auto snap-x snap-mandatory custom-scrollbar"
+                                style={{scrollBehavior: 'smooth'}}
+                            >
+                                {[1,2,3,4,5].map(i => (
+                                    <div key={i} className="flex-shrink-0 w-full snap-center overflow-y-auto h-[85vh] no-scrollbar">
+                                        <img alt={`网站设计 ${i}`} className="w-full h-auto" src={`image/site_${i}.png`} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                 </main>
+             )
+        };
+
+        const GamePage = () => {
+             return (
+                 <main className="w-full flex flex-col items-center pt-12 md:pt-20 px-4">
+                    <header className="w-full max-w-5xl mb-10">
+                        <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
+                            <span className="text-sm font-medium text-primary-fixed-dim">项目类型：二次元抽卡游戏界面</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold mb-8 text-white">喵噗小镇</h1>
+                        <div className="glass-card rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-tertiary opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <h3 className="text-2xl font-bold text-white mb-4">设计说明</h3>
+                            <div className="text-on-surface-variant leading-relaxed text-lg">
+                                <p>世界观、关键词、情绪版、主界面、角色属性界面、背包界面、主要关卡界面、奖励列表界面</p>
+                            </div>
+                        </div>
+                    </header>
+                    <img alt="游戏界面" className="w-full max-w-5xl h-auto" src="image/game.png" />
+                 </main>
+             )
+        };
+
+
+        const App = () => {
+            useScrollToTop();
+            return (
+                <div className="flex flex-col">
+                    <NavBar />
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/mobile" element={<MobilePage />} />
+                        <Route path="/web" element={<WebPage />} />
+                        <Route path="/game" element={<GamePage />} />
+                    </Routes>
+                </div>
+            );
+        };
+
+        const RouterWrapper = () => (
+            <MemoryRouter>
+                <App />
+            </MemoryRouter>
+        );
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<RouterWrapper />);
+    </script>
+</body>
+</html>
