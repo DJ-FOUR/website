@@ -1,0 +1,5 @@
+# Original high-res source images (optimized JPEGs are used instead)
+image/*.png
+
+# Python cache
+__pycache__/

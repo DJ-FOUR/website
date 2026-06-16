@@ -95,27 +95,11 @@
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
 
-        .glass-panel, .glass-card {
+        .glass-card {
             background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .glass-panel-hover:hover {
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            box-shadow: 0 0 30px rgba(192, 193, 255, 0.1);
-        }
-
-        .image-zoom-container { overflow: hidden; }
-        .image-zoom { transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1); }
-        .image-zoom-container:hover .image-zoom { transform: scale(1.05); }
-
-        .text-gradient {
-            background: linear-gradient(to right, #6366f1, #ddb7ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .custom-scrollbar::-webkit-scrollbar { height: 8px; }
@@ -124,17 +108,15 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.8); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .hero-gradient { background: radial-gradient(circle at center, rgba(105, 0, 179, 0.15) 0%, rgba(11, 19, 38, 1) 70%); }
     </style>
 </head>
 <body class="antialiased selection:bg-primary/30 selection:text-white min-h-screen flex flex-col font-sans">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useEffect, useRef } = React;
         const { createRoot } = ReactDOM;
-        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+        const { MemoryRouter, Routes, Route, Link, useLocation } = ReactRouterDOM;
 
         // --- Custom Hooks ---
         const useIntersectionObserver = () => {
@@ -202,24 +184,6 @@
             );
         };
 
-        const Footer = () => (
-            <footer className="w-full py-12 md:py-20 bg-surface dark:bg-background border-t border-outline-variant/30 transition-all duration-300 mt-auto">
-                <div className="max-w-container-max-width mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
-                        杜俊涛的作品集
-                    </div>
-                    <div className="flex gap-6 mt-4 md:mt-0">
-                        <a className="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 font-medium" href="#">微信</a>
-                        <a className="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 font-medium" href="#">简历下载</a>
-                        <a className="text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 font-medium" href="#">设计作品</a>
-                    </div>
-                    <div className="text-sm text-on-surface-variant">
-                        © 2024 Du Juntao 杜俊涛. All rights reserved.
-                    </div>
-                </div>
-            </footer>
-        );
-
         // --- Pages ---
         const HomePage = () => {
             useIntersectionObserver();
@@ -229,7 +193,7 @@
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {/* Mobile Card */}
                             <Link to="/mobile" className="group relative overflow-hidden rounded-2xl bg-surface-container h-[550px] cursor-pointer fade-in-up delay-100 transition duration-500 hover:-translate-y-2 border border-white/5 hover:border-primary/30 hover:shadow-[0_10px_40px_-10px_rgba(192,193,255,0.2)]" style={{WebkitMaskImage: 'linear-gradient(white, white)', maskImage: 'linear-gradient(white, white)'}}>
-                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{backgroundImage: "url('image/01.png')"}}></div>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{backgroundImage: "url('image/01.jpg')"}}></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
                                 <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-3 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
                                     <span className="inline-flex w-fit items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-label-mono text-label-mono border border-primary/20 backdrop-blur-md">MOBILE</span>
@@ -242,7 +206,7 @@
 
                             {/* Web Card */}
                             <Link to="/web" className="group relative overflow-hidden rounded-2xl bg-surface-container h-[550px] cursor-pointer fade-in-up delay-200 transition duration-500 hover:-translate-y-2 border border-white/5 hover:border-secondary/30 hover:shadow-[0_10px_40px_-10px_rgba(192,193,255,0.2)]" style={{WebkitMaskImage: 'linear-gradient(white, white)', maskImage: 'linear-gradient(white, white)'}}>
-                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{backgroundImage: "url('image/03.png')"}}></div>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110" style={{backgroundImage: "url('image/03.jpg')"}}></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
                                 <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-3 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
                                     <span className="inline-flex w-fit items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary font-label-mono text-label-mono border border-secondary/20 backdrop-blur-md">WEB</span>
@@ -255,7 +219,7 @@
 
                             {/* Game Card */}
                             <Link to="/game" className="group relative overflow-hidden rounded-2xl bg-surface-container h-[550px] cursor-pointer fade-in-up delay-300 transition duration-500 hover:-translate-y-2 border border-white/5 hover:border-tertiary/30 hover:shadow-[0_10px_40px_-10px_rgba(255,183,131,0.2)]" style={{WebkitMaskImage: 'linear-gradient(white, white)', maskImage: 'linear-gradient(white, white)'}}>
-                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110 rounded-2xl" style={{backgroundImage: "url('image/02.png')"}}></div>
+                                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110 rounded-2xl" style={{backgroundImage: "url('image/02.jpg')"}}></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 rounded-2xl"></div>
                                 <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-3 transform transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
                                     <span className="inline-flex w-fit items-center px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-mono text-label-mono border border-tertiary/20 backdrop-blur-md">GAME UI</span>
@@ -281,18 +245,15 @@
              const onMouseDown = (e) => {
                  isDown = true;
                  if(scrollRef.current) {
-                     scrollRef.current.classList.add('active:cursor-grabbing');
                      startX = e.pageX - scrollRef.current.offsetLeft;
                      scrollLeft = scrollRef.current.scrollLeft;
                  }
              };
              const onMouseLeave = () => {
                  isDown = false;
-                 if(scrollRef.current) scrollRef.current.classList.remove('active:cursor-grabbing');
              };
              const onMouseUp = () => {
                  isDown = false;
-                 if(scrollRef.current) scrollRef.current.classList.remove('active:cursor-grabbing');
              };
              const onMouseMove = (e) => {
                  if (!isDown) return;
@@ -348,7 +309,7 @@
                                         className="flex overflow-x-auto snap-x snap-mandatory custom-scrollbar cursor-grab h-[600px] items-center"
                                         style={{scrollBehavior: 'smooth'}}
                                     >
-                                        <img alt="App Interface" className="h-[560px] w-auto max-w-none snap-center pointer-events-none" src="image/B.png" />
+                                        <img alt="App Interface" className="h-[560px] w-auto max-w-none snap-center pointer-events-none" src="image/B.jpg" loading="lazy" decoding="async" />
                                     </div>
                                 </div>
                             </div>
@@ -358,7 +319,7 @@
                         <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
                             <span className="text-sm font-medium text-primary-fixed-dim">APP导航图</span>
                         </div>
-                        <img alt="导航图" className="w-full h-auto" src="image/daohang.png" />
+                        <img alt="导航图" className="w-full h-auto" src="image/daohang.jpg" loading="lazy" decoding="async" />
                     </section>
                  </main>
              )
@@ -404,7 +365,7 @@
                             >
                                 {[1,2,3,4,5].map(i => (
                                     <div key={i} className="flex-shrink-0 w-full snap-center overflow-y-auto h-[85vh] no-scrollbar">
-                                        <img alt={`网站设计 ${i}`} className="w-full h-auto" src={`image/site_${i}.png`} />
+                                        <img alt={`网站设计 ${i}`} className="w-full h-auto" src={`image/site_${i}.jpg`} loading="lazy" decoding="async" />
                                     </div>
                                 ))}
                             </div>
@@ -430,7 +391,7 @@
                             </div>
                         </div>
                     </header>
-                    <img alt="游戏界面" className="w-full max-w-5xl h-auto" src="image/game.png" />
+                    <img alt="游戏界面" className="w-full max-w-5xl h-auto" src="image/game.jpg" loading="lazy" decoding="async" />
                  </main>
              )
         };
