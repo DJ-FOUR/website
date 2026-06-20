@@ -108,6 +108,21 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.8); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Image lazy-load transition */
+        .img-loading {
+            opacity: 0;
+            filter: blur(8px);
+            transform: scale(0.98);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .img-loaded {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-primary/30 selection:text-white min-h-screen flex flex-col font-sans">
@@ -164,21 +179,18 @@
 
             return (
                 <nav className="sticky top-0 w-full z-50 bg-surface-container/50 dark:bg-surface-container/50 backdrop-blur-xl border-b border-white/10 dark:border-white/5 shadow-sm transition-all duration-500 ease-in-out font-body-md text-body-md">
-                    <div className="flex justify-between items-center px-8 py-4 max-w-container-max-width mx-auto">
-                        <Link to="/" className="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-background hover:text-primary transition-colors">
+                    <div className="relative flex justify-center items-center px-8 py-4 max-w-container-max-width mx-auto">
+                        <Link to="/" className="absolute left-8 font-headline-md text-headline-md font-bold text-on-surface dark:text-on-background hover:text-primary transition-colors">
                             杜俊涛的作品集
                         </Link>
-                        
+
                         <div className="hidden md:flex items-center gap-8">
                             <Link to="/" className={navItemClass('/')}>作品总览</Link>
                             <Link to="/mobile" className={navItemClass('/mobile')}>手机app</Link>
                             <Link to="/web" className={navItemClass('/web')}>网站设计</Link>
                             <Link to="/game" className={navItemClass('/game')}>游戏界面</Link>
                         </div>
-                        
-                        <button className="bg-gradient-to-r from-primary to-secondary text-background font-body-md text-body-md px-6 py-2.5 rounded-full font-bold hover:opacity-90 hover:shadow-[0_0_20px_rgba(128,131,255,0.4)] transition-all duration-300 transform hover:-translate-y-0.5">
-                            联系我
-                        </button>
+
                     </div>
                 </nav>
             );
@@ -309,7 +321,7 @@
                                         className="flex overflow-x-auto snap-x snap-mandatory custom-scrollbar cursor-grab h-[600px] items-center"
                                         style={{scrollBehavior: 'smooth'}}
                                     >
-                                        <img alt="App Interface" className="h-[560px] w-auto max-w-none snap-center pointer-events-none" src="image/B.jpg" loading="lazy" decoding="async" />
+                                        <img alt="App Interface" className="img-loading h-[560px] w-auto max-w-none snap-center pointer-events-none" src="image/B.jpg" loading="lazy" decoding="async" onLoad={e => e.target.classList.add('img-loaded')} />
                                     </div>
                                 </div>
                             </div>
@@ -319,7 +331,7 @@
                         <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
                             <span className="text-sm font-medium text-primary-fixed-dim">APP导航图</span>
                         </div>
-                        <img alt="导航图" className="w-full h-auto" src="image/daohang.jpg" loading="lazy" decoding="async" />
+                        <img alt="导航图" className="img-loading w-full h-auto" src="image/daohang.jpg" loading="lazy" decoding="async" onLoad={e => e.target.classList.add('img-loaded')} />
                     </section>
                  </main>
              )
@@ -365,7 +377,7 @@
                             >
                                 {[1,2,3,4,5].map(i => (
                                     <div key={i} className="flex-shrink-0 w-full snap-center overflow-y-auto h-[85vh] no-scrollbar">
-                                        <img alt={`网站设计 ${i}`} className="w-full h-auto" src={`image/site_${i}.jpg`} loading="lazy" decoding="async" />
+                                        <img alt={`网站设计 ${i}`} className="img-loading w-full h-auto" src={`image/site_${i}.jpg`} loading="lazy" decoding="async" onLoad={e => e.target.classList.add('img-loaded')} />
                                     </div>
                                 ))}
                             </div>
@@ -377,21 +389,23 @@
 
         const GamePage = () => {
              return (
-                 <main className="w-full flex flex-col items-center pt-12 md:pt-20 px-4">
-                    <header className="w-full max-w-5xl mb-10">
-                        <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
-                            <span className="text-sm font-medium text-primary-fixed-dim">项目类型：二次元抽卡游戏界面</span>
-                        </div>
-                        <h1 className="text-4xl md:text-5xl font-bold mb-8 text-white">喵噗小镇</h1>
-                        <div className="glass-card rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
-                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-tertiary opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <h3 className="text-2xl font-bold text-white mb-4">设计说明</h3>
-                            <div className="text-on-surface-variant leading-relaxed text-lg">
-                                <p>世界观、关键词、情绪版、主界面、角色属性界面、背包界面、主要关卡界面、奖励列表界面</p>
+                 <main className="flex-grow flex flex-col items-center pt-8 pb-8">
+                    <section className="w-full max-w-container-max-width mx-auto px-6 lg:px-8">
+                        <div className="mb-10">
+                            <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm w-fit">
+                                <span className="text-sm font-medium text-primary-fixed-dim">项目类型：二次元抽卡游戏界面</span>
+                            </div>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-white">喵噗小镇</h1>
+                            <div className="glass-card rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-tertiary opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <h3 className="text-2xl font-bold text-white mb-4">设计说明</h3>
+                                <div className="text-on-surface-variant leading-relaxed text-lg">
+                                    <p>世界观、关键词、情绪版、主界面、角色属性界面、背包界面、主要关卡界面、奖励列表界面</p>
+                                </div>
                             </div>
                         </div>
-                    </header>
-                    <img alt="游戏界面" className="w-full max-w-5xl h-auto" src="image/game.jpg" loading="lazy" decoding="async" />
+                        <img alt="游戏界面" className="img-loading w-full h-auto" src="image/game.jpg" loading="lazy" decoding="async" onLoad={e => e.target.classList.add('img-loaded')} />
+                    </section>
                  </main>
              )
         };
